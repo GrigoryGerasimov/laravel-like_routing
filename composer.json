@@ -1,0 +1,15 @@
+{
+    "name": "grigorygerasimov/laralikerouting",
+    "description": "Laravel-like routing in native PHP",
+    "autoload": {
+        "psr-4": {
+            "GrigoryGerasimov\\LaraLikeRouting\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Grigory Gerasimov"
+        }
+    ],
+    "require": {}
+}
