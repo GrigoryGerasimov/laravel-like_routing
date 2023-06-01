@@ -9,5 +9,6 @@ ini_set('display_startup_errors', 1);
 use GrigoryGerasimov\LaraLikeRouting\Bootstrap\App;
 
 require_once('../vendor/autoload.php');
+require_once('../routes/web.php');
 
 App::run();

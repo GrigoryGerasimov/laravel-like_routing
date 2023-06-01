@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace GrigoryGerasimov\LaraLikeRouting\Core\Routing;
 
-use GrigoryGerasimov\LaraLikeRouting\Core\Exceptions\{
-    InvalidRouteControllerTypeException,
-    InvalidRouteTypeException,
+use GrigoryGerasimov\LaraLikeRouting\Core\Exceptions\Route\{
     InvalidRouteException,
-    InvalidRouteControllerException
+    InvalidRouteTypeException
+};
+use GrigoryGerasimov\LaraLikeRouting\Core\Exceptions\RouteController\{
+    InvalidRouteControllerException,
+    InvalidRouteControllerTypeException
 };
 
 class Router
@@ -19,6 +21,12 @@ class Router
     protected static array $PUTs = [];
     protected static array $PATCHs = [];
     protected static array $DELETEs = [];
+
+    /** @return array<RouterConfig> */
+    public static function retrieveGETs(): array
+    {
+        return self::$GETs;
+    }
 
     public static function get(string $route, array|string $controller): RouterConfig
     {
@@ -34,10 +42,10 @@ class Router
                 throw new InvalidRouteControllerTypeException('Invalid route controller type');
             }
             [$controllerClass, $controllerAction] = gettype($controller) === 'array' ? $controller : explode('@', $controller);
-        } catch (InvalidRouteException | InvalidRouteTypeException | InvalidRouteControllerTypeException | InvalidRouteControllerException $e) {
+        } catch (InvalidRouteException|InvalidRouteTypeException|InvalidRouteControllerTypeException|InvalidRouteControllerException $e) {
             die($e->getMessage());
         } catch (\Throwable $e) {
-            error_log($e->getMessage());
+            error_log($e->getTraceAsString());
         }
 
         self::$routerConfig = new RouterConfig($route, $controllerClass, $controllerAction);
