@@ -9,12 +9,16 @@ use GrigoryGerasimov\LaraLikeRouting\Core\Helpers\{Helper, ClearStringOptions};
 
 class RouteDispatcher
 {
-    private string $requestUri = '/';
-    private string $configRoute;
+    protected string $requestUri = '/';
+    protected string $configRoute;
+    protected array $splitRequestUri;
+    protected array $splitConfigRoute;
+    protected array $paramMap;
 
     public function __construct(
         protected RouterConfig $routerConfig
-    ) {
+    )
+    {
         $this->configRoute = $this->routerConfig->route;
     }
 
@@ -22,6 +26,7 @@ class RouteDispatcher
     {
         $this->saveRequestUri();
         $this->getParamMap();
+        $this->makeRegexRequest();
     }
 
     public function saveRequestUri(): void
@@ -46,21 +51,23 @@ class RouteDispatcher
 
     public function getParamMap(): void
     {
-        $splitRequestUri = explode('/', $this->requestUri);
-        var_dump($this->configRoute);
-        $splitConfigRoute = explode('/', $this->configRoute);
+        $this->splitConfigRoute = explode('/', $this->configRoute);
 
-
-        echo '<pre>';
-        print_r($splitRequestUri);
-        echo '</pre>';
-        echo '<pre>';
-        print_r($splitConfigRoute);
-        echo '</pre>';
+        foreach ($this->splitConfigRoute as $key => $value) {
+            if (preg_match('/{.*}/', $value)) {
+                $this->paramMap[$key] = $value;
+            }
+        }
     }
 
-    public function makeRegexRequest()
+    public function makeRegexRequest(): void
     {
+        $this->splitRequestUri = explode('/', $this->requestUri);
 
+        foreach($this->splitRequestUri as $key => $value) {
+            if (array_key_exists($key, $this->paramMap)) {
+                print_r($this->paramMap[$key]);
+            }
+        }
     }
 }
