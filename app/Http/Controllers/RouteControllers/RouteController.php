@@ -10,6 +10,6 @@ class RouteController extends Controller
 {
     public function index(): void
     {
-        include('resources/views/home.php');
+        include(__DIR__.'/../../../../resources/views/home.php');
     }
 }
