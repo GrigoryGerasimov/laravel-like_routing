@@ -31,7 +31,7 @@ class Router
     public static function get(string $route, array|string $controller): RouterConfig
     {
         try {
-            if (empty($route)) {
+            if (!isset($route)) {
                 throw new InvalidRouteException('Invalid route');
             } else if (gettype($route) !== 'string') {
                 throw new InvalidRouteTypeException('Invalid route type');
@@ -50,9 +50,6 @@ class Router
 
         self::$routerConfig = new RouterConfig($route, $controllerClass, $controllerAction);
         self::$GETs[] = self::$routerConfig;
-
-        (new $controllerClass)->$controllerAction();
-
         return self::$routerConfig;
     }
 }
