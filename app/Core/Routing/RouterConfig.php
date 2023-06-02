@@ -20,6 +20,16 @@ class RouterConfig
         return $this->$prop;
     }
 
+    public function __isset($prop): bool
+    {
+        return property_exists($this, $prop);
+    }
+
+    public function retrievePropsAsArray(): array
+    {
+        return get_object_vars($this);
+    }
+
     public function name(string $name): self
     {
         $this->name = $name;
