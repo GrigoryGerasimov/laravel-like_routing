@@ -12,4 +12,10 @@ class RouteController extends Controller
     {
         include(__DIR__.'/../../../../resources/views/home.php');
     }
+
+    public function show(string $article, string $test): void
+    {
+        print($article).PHP_EOL;
+        print($test).PHP_EOL;
+    }
 }

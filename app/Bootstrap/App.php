@@ -18,7 +18,7 @@ final class App
 
             foreach(Router::retrieveGETs() as $GETConfig) {
                 $dispatcher = new RouteDispatcher($GETConfig);
-                $dispatcher->process();
+                $dispatcher->start();
             }
         } catch (InvalidRouteCount $e) {
             die($e->getMessage());
