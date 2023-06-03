@@ -25,7 +25,14 @@ class RouterConfig
         return property_exists($this, $prop);
     }
 
-    public function retrievePropsAsArray(): array
+    public function __call(string $name, array $arguments)
+    {
+        if (method_exists($this, $name)) {
+            return call_user_func([$this::class, $name], $arguments);
+        }
+    }
+
+    private function retrievePropsAsArray(): array
     {
         return get_object_vars($this);
     }
@@ -33,6 +40,8 @@ class RouterConfig
     public function name(string $name): self
     {
         $this->name = $name;
+
+        $GLOBALS[$this->name] = $this->route;
 
         return $this;
     }

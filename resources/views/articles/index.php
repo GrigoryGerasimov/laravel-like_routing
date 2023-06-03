@@ -9,5 +9,6 @@
 </head>
 <body>
 <h1>Articles Page</h1>
+<h5>Posted title: <?php print_r($fromSession) ?></h5>
 </body>
 </html>

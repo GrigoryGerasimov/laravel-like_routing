@@ -9,15 +9,27 @@ use GrigoryGerasimov\LaraLikeRouting\Core\View\View;
 
 class RouteController extends Controller
 {
-    public function index(): void
+    public function index(): View
     {
-        View::make('articles.index');
+        $fromSession = $_SESSION['posted'];
+
+        return View::make('articles.index', compact('fromSession'));
     }
 
-    public function show(string $article, string $test): void
+    public function show(string $article, string $test): View
     {
-        View::make('home');
-        print($article).PHP_EOL;
-        print($test).PHP_EOL;
+        return View::make('home', compact('article','test'));
+    }
+
+    public function create(): View
+    {
+        return View::make('articles.create');
+    }
+
+    public function store(): View
+    {
+        $_SESSION['posted'] = $_POST['title'];
+
+        return View::toRoute('articles.index');
     }
 }

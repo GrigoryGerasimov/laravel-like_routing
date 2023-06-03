@@ -9,6 +9,11 @@ use GrigoryGerasimov\LaraLikeRouting\Core\Routing\{Router, RouteDispatcher};
 
 final class App
 {
+    private static function getMethodCollectionName(): string
+    {
+        return 'retrieve' . $_SERVER['REQUEST_METHOD'] . 's';
+    }
+
     public static function run(): void
     {
         try {
@@ -16,8 +21,10 @@ final class App
                 throw new InvalidRouteCount('No routes identified');
             }
 
-            foreach(Router::retrieveGETs() as $GETConfig) {
-                $dispatcher = new RouteDispatcher($GETConfig);
+            $methodCollection = self::getMethodCollectionName();
+
+            foreach(Router::$methodCollection() as $config) {
+                $dispatcher = new RouteDispatcher($config);
                 $dispatcher->start();
             }
         } catch (InvalidRouteCount $e) {
